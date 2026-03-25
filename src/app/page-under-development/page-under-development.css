@@ -1,0 +1,121 @@
+.wip-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 60vh;
+}
+
+.wip-card {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  padding: 50px 40px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.wip-icon-wrapper {
+  position: relative;
+  margin: 0 auto 30px auto;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 50%;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.cog-icon {
+  font-size: 60px;
+  animation: spin 8s linear infinite;
+  color: #3b82f6;
+}
+
+.sparkle-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.wip-title {
+  color: #0f172a;
+  font-size: 28px;
+  margin: 0 0 16px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.wip-subtitle {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 36px 0;
+}
+
+.wip-progress-container {
+  width: 100%;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 36px;
+  overflow: hidden;
+  position: relative;
+}
+
+.wip-progress-bar {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  border-radius: 10px;
+  animation: loadingBar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes loadingBar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+.return-btn {
+  background: #0f172a;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.return-btn:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Dark Mode Overrides */
+body.dark-theme .wip-card {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+body.dark-theme .wip-icon-wrapper {
+  background: #0f172a;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+}
+
+body.dark-theme .wip-title { color: white; }
+body.dark-theme .wip-subtitle { color: #94a3b8; }
+body.dark-theme .wip-progress-container { background: #0f172a; }
+body.dark-theme .return-btn { background: #3b82f6; }
+body.dark-theme .return-btn:hover { background: #2563eb; }

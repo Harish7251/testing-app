@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-main',
   standalone: false,
   templateUrl: './main.html',
   styleUrl: './main.css',
+  encapsulation: ViewEncapsulation.None
 })
-export class Main {
+export class Main implements OnInit {
+  isLoading: boolean = true;
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 6000);
+  }
+
   userDetails = {
     name: '',
     email: '',

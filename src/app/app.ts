@@ -8,20 +8,42 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class App {
-  userInput: string = '';
-  messages: any[] = [];
+
+  // 🔐 Auth & UI
+  isLoggedIn: boolean = false;
   isOpen = false;
-  
   isLoading: boolean = true;
+
+  // 📊 Dashboard Data
   tableData: any[] = [];
   graphData: any[] = [];
+
+  // 📱 Layout
   isSidebarOpen: boolean = window.innerWidth > 768;
   currentView: string = 'dashboard';
+  isScrolled: boolean = false;
 
+  // 💬 Chatbot
+  messages: any[] = [];
+  userInput: string = '';
+
+  // 🔐 Login
+  onLogin() {
+    this.isLoggedIn = true;
+  }
+
+  // 📜 Scroll
+  onScroll(event: Event) {
+    const target = event.target as HTMLElement;
+    this.isScrolled = target.scrollTop > 10;
+  }
+
+  // 🔄 Navigation
   onNavigate(view: string) {
     this.currentView = view;
   }
 
+  // 📦 Load dummy data
   ngOnInit() {
     setTimeout(() => {
       this.tableData = [
@@ -31,6 +53,7 @@ export class App {
         { id: '#1026', name: 'Justin Septimus', email: 'justin@example.com', contact: '+1 (555) 111-2222', role: 'User', status: 'Pending' },
         { id: '#1027', name: 'Marcus Bator', email: 'marcus@example.com', contact: '+1 (555) 444-5555', role: 'Admin', status: 'Active' }
       ];
+
       this.graphData = [
         { day: 'Mon', value: 40 },
         { day: 'Tue', value: 70 },
@@ -38,71 +61,59 @@ export class App {
         { day: 'Thu', value: 90 },
         { day: 'Fri', value: 65 },
         { day: 'Sat', value: 30 },
-        { day: 'Sun', value: 45 },
+        { day: 'Sun', value: 45 }
       ];
+
       this.isLoading = false;
-    }, 6000);
+    }, 2000);
   }
 
+  // 💬 Toggle Chat
   toggleChat() {
     this.isOpen = !this.isOpen;
   }
 
+  // 📱 Sidebar
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
+
+  // 🤖 Send Message (MAIN LOGIC)
   sendMessage() {
     if (!this.userInput.trim()) return;
 
-    this.messages.push({ text: this.userInput, type: 'user' });
+    // 👉 Add user message
+    this.messages.push({
+      text: this.userInput,
+      type: 'user'
+    });
 
-    const userText = this.userInput;
+    const userMsg = this.userInput;
     this.userInput = '';
 
-    // typing indicator
-    this.messages.push({ text: 'Typing...', type: 'bot' });
-
-    setTimeout(() => {
-      this.messages.pop(); // remove typing
-      const reply = this.getBotResponse(userText);
-      this.messages.push({ text: reply, type: 'bot' });
-    }, 1000);
-  }
-
-  knowledgeBase: any = [
-    {
-      keywords: ['hlo', 'sign in'],
-      answer: 'Kya re chikne',
-    },
-    {
-      keywords: ['ek kam to kar'],
-      answer: 'muh me dedunga choco',
-    },
-    {
-      keywords: ['bhadwa'],
-      answer: 'Tu bhadwa tera baap bhadwa',
-    },
-    {
-      keywords: ['bhai'],
-      answer: 'Hn pappeeee',
-    },
-    {
-      keywords: ['contact', 'support'],
-      answer: 'For support, visit the Contact page or email support@gmail.com',
-    },
-  ];
-
-  getBotResponse(input: string): string {
-    input = input.toLowerCase();
-
-    for (let item of this.knowledgeBase) {
-      for (let keyword of item.keywords) {
-        if (input.includes(keyword)) {
-          return item.answer;
-        }
-      }
-    }
-
-    return "Sorry, I didn't understand that. Please try another question.";
+    // 👉 Call backend API
+    fetch('https://localhost:7260/api/chat/ask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: userMsg.trim()   // 👈 important
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.messages.push({
+          text: data.reply,
+          type: 'bot'
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        this.messages.push({
+          text: 'Server error ❌',
+          type: 'bot'
+        });
+      });
   }
 }

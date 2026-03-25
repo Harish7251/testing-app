@@ -8,6 +8,8 @@ import { SideBar } from './side-bar/side-bar';
 import { NavBar } from './nav-bar/nav-bar';
 import { Dashboard } from './dashboard/dashboard';
 import { Main } from './main/main';
+import { Login } from './login/login';
+import { PageUnderDevelopment } from './page-under-development/page-under-development';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { Main } from './main/main';
     SideBar,
     NavBar,
     Dashboard,
-    Main
+    Main,
+    Login,
+    PageUnderDevelopment
   ],
   imports: [
     BrowserModule,

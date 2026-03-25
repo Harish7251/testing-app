@@ -273,10 +273,36 @@ app-side-bar {
 }
 
 .header {
+  position: sticky;
+  top: -31px; 
+  margin-top: -30px;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 30px 40px 15px 40px;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header.scrolled {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+body.dark-theme .header.scrolled {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .header h2 {
@@ -1414,3 +1440,13 @@ body.dark-theme .contact-method { background: #0f172a; border-color: rgba(255,25
 body.dark-theme .contact-icon { background: #1e293b; color: white; }
 body.dark-theme .contact-label { color: #94a3b8; }
 body.dark-theme .contact-value { color: #e2e8f0; }
+
+@media (max-width: 768px) {
+  .header {
+    top: -21px;
+    margin-top: -20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 20px 20px 15px 20px;
+  }
+}

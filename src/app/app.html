@@ -1,28 +1,28 @@
-<div class="dashboard-layout">
+<app-login *ngIf="!isLoggedIn" (loginSuccess)="onLogin()"></app-login>
+
+<div class="dashboard-layout" *ngIf="isLoggedIn">
   <!-- Mobile Overlay Backdrop -->
   <div class="sidebar-backdrop" [class.active]="isSidebarOpen" (click)="toggleSidebar()"></div>
 
-  <app-side-bar 
-    [isSidebarOpen]="isSidebarOpen" 
-    [currentView]="currentView"
-    (toggle)="toggleSidebar()" 
+  <app-side-bar [isSidebarOpen]="isSidebarOpen" [currentView]="currentView" (toggle)="toggleSidebar()"
     (navigate)="onNavigate($event)">
   </app-side-bar>
 
   <!-- Main Content -->
-  <main class="main-content">
-    <app-nav-bar (toggle)="toggleSidebar()"></app-nav-bar>
+  <main class="main-content" (scroll)="onScroll($event)">
+    <app-nav-bar [isScrolled]="isScrolled" (toggle)="toggleSidebar()"></app-nav-bar>
     <app-dashboard *ngIf="currentView === 'dashboard'"></app-dashboard>
     <app-main *ngIf="currentView === 'main'"></app-main>
-    
-    <div *ngIf="currentView === 'contact'" style="padding: 40px; max-width: 600px; margin: 0 auto; width: 100%; animation: dropIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+
+    <div *ngIf="currentView === 'contact'"
+      style="padding: 40px; max-width: 600px; margin: 0 auto; width: 100%; animation: dropIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
       <div class="metric-card" style="text-align: center; padding: 40px 30px;">
         <span style="font-size: 48px; margin-bottom: 15px; display: block;">🎧</span>
         <h2 class="contact-header">Get in Touch</h2>
         <p class="contact-desc">
           Have questions about the Punjab E-Budget portal? Our dedicated support team is available 24/7 to assist you.
         </p>
-        
+
         <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px;">
           <div class="contact-method">
             <div class="contact-icon">📧</div>
@@ -39,24 +39,25 @@
             </div>
           </div>
         </div>
-        
+
         <button class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">Send a Direct Message</button>
       </div>
     </div>
 
-    <div *ngIf="currentView !== 'dashboard' && currentView !== 'main' && currentView !== 'contact'" style="padding: 40px; text-align: center; color: #64748b; font-weight: 500;">
-      <h3>Page not found or WIP</h3>
-    </div>
+    <app-page-under-development
+      *ngIf="currentView !== 'dashboard' && currentView !== 'main' && currentView !== 'contact'"
+      (navigate)="onNavigate($event)">
+    </app-page-under-development>
   </main>
 </div>
 
 <!-- Floating Button -->
-<div class="chat-toggle" (click)="toggleChat()">
+<div class="chat-toggle" *ngIf="isLoggedIn" (click)="toggleChat()">
   <span class="robot-face">🤖</span><span class="robot-hand">👋</span>
 </div>
 
 <!-- Chat Window -->
-<div class="chat-popup" *ngIf="isOpen">
+<div class="chat-popup" *ngIf="isOpen && isLoggedIn">
   <div class="chat-wrapper">
 
     <div class="chat-header">
