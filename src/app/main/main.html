@@ -1,0 +1,76 @@
+<div class="main-container fade-in">
+  <div class="form-card metric-card">
+    <div class="form-header">
+      <h2>User Profile Details</h2>
+      <p>Enter the employee information and upload a profile photo.</p>
+    </div>
+
+    <div class="form-body">
+      <!-- Two column grid -->
+      <div class="form-grid">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="e.g. Alena Donin" (input)="userDetails.name = $any($event.target).value" [value]="userDetails.name">
+        </div>
+
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="alena@example.com" (input)="userDetails.email = $any($event.target).value" [value]="userDetails.email">
+        </div>
+
+        <div class="input-group">
+          <label>Contact Number</label>
+          <input type="text" placeholder="+1 (555) 123-4567" (input)="userDetails.contact = $any($event.target).value" [value]="userDetails.contact">
+        </div>
+
+        <div class="input-group">
+          <label>Role</label>
+          <select (change)="userDetails.role = $any($event.target).value">
+            <option value="Super Admin">Super Admin</option>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Subscriber">Subscriber</option>
+            <option value="User" selected>User</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <label>Profile Photo</label>
+        <div class="upload-controls">
+          <label class="upload-btn">
+            <span>📷 Choose Image</span>
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+          </label>
+          
+          <button class="eye-btn" 
+                  [class.disabled]="!uploadedImagePreview"
+                  (click)="togglePreview()" 
+                  title="Preview Uploaded Image">
+            👁️ View Detail
+          </button>
+        </div>
+        <p class="upload-status" *ngIf="uploadedImagePreview">
+          ✅ Image successfully loaded. Click the eye button to preview.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="action-btn submit-btn" (click)="onSubmit()">Save User Details</button>
+    </div>
+  </div>
+
+  <!-- Image Preview Modal -->
+  <div class="preview-modal-backdrop" *ngIf="isPreviewOpen" (click)="closePreview()">
+    <div class="preview-modal" (click)="$event.stopPropagation()">
+      <div class="preview-header">
+        <h3>Image Preview</h3>
+        <button class="close-btn" (click)="closePreview()">✕</button>
+      </div>
+      <div class="preview-content">
+        <img [src]="uploadedImagePreview" alt="Profile Preview">
+      </div>
+    </div>
+  </div>
+</div>

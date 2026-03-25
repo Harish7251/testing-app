@@ -1,0 +1,70 @@
+<aside class="sidebar premium-sidebar" [class.collapsed]="!isSidebarOpen" [class.mobile-open]="isSidebarOpen">
+  <!-- Sidebar Toggle -->
+  <button class="toggle-btn" (click)="toggleSidebar()">
+    <svg viewBox="0 0 24 24" fill="none" class="toggle-icon">
+      <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  <div class="sidebar-header">
+    <div class="logo-circle" *ngIf="!isLoading" style="font-size: 13px; letter-spacing: 1px;">PB</div>
+    <h2 class="sidebar-title" *ngIf="!isLoading" style="line-height: 1.1;">
+      E-Budget
+      <span
+        style="display: block; font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;">Govt.
+        of Punjab</span>
+    </h2>
+
+    <!-- Skeleton Header -->
+    <div *ngIf="isLoading" class="skeleton skeleton-logo-circle"></div>
+    <div *ngIf="isLoading" class="skeleton skeleton-text skeleton-sidebar-title" style="margin: 0;"></div>
+  </div>
+
+  <div class="nav-container">
+    <ul class="nav-links">
+      <ng-container *ngIf="!isLoading">
+        <li [class.active]="currentView === 'dashboard'"><a href="#" (click)="onNavClick('dashboard', $event)">
+            <span class="icon">📊</span> <span class="nav-text">Dashboard</span>
+          </a></li>
+        <li [class.active]="currentView === 'main'"><a href="#" (click)="onNavClick('main', $event)">
+            <span class="icon">👥</span> <span class="nav-text">Users</span>
+          </a></li>
+        <li [class.active]="currentView === 'settings'"><a href="#" (click)="onNavClick('settings', $event)">
+            <span class="icon">⚙️</span> <span class="nav-text">Settings</span>
+          </a></li>
+        <li [class.active]="currentView === 'messages'"><a href="#" (click)="onNavClick('messages', $event)">
+            <span class="icon">✉️</span> <span class="nav-text">Messages</span>
+            <span class="nav-badge">3</span>
+          </a></li>
+      </ng-container>
+
+      <ng-container *ngIf="isLoading">
+        <li *ngFor="let i of [1,2,3,4]">
+          <a class="skeleton-nav-item" style="display: flex;">
+            <div class="skeleton" style="width: 20px; height: 20px; border-radius: 6px;"></div>
+            <div class="skeleton skeleton-text" style="width: 100px; height: 14px; margin: 0;"></div>
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+
+    <ul class="nav-links bottom-nav">
+      <ng-container *ngIf="!isLoading">
+        <li [class.active]="currentView === 'contact'"><a href="#" (click)="onNavClick('contact', $event)">
+            <span class="icon">🎧</span> <span class="nav-text">Contact Us</span>
+          </a></li>
+        <li class="logout-link"><a href="#">
+            <span class="icon">🚪</span> <span class="nav-text">Logout</span>
+          </a></li>
+      </ng-container>
+      <ng-container *ngIf="isLoading">
+        <li>
+          <a class="skeleton-nav-item" style="display: flex;">
+            <div class="skeleton" style="width: 20px; height: 20px; border-radius: 6px;"></div>
+            <div class="skeleton skeleton-text" style="width: 100px; height: 14px; margin: 0;"></div>
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</aside>
