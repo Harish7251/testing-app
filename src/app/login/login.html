@@ -1,0 +1,56 @@
+<div class="login-wrapper" [class.dark-theme-active]="isDarkTheme">
+  <div class="login-left">
+    <div class="branding">
+      <div class="logo-circle" style="font-size: 24px; padding: 15px; width: 60px; height: 60px; border-radius: 16px;">PB</div>
+      <h1>Punjab E-Budget</h1>
+      <p>Modernize your financial ecosystem with our state-of-the-art smart dashboard analytics.</p>
+    </div>
+    <div class="abstract-shape shape-1"></div>
+    <div class="abstract-shape shape-2"></div>
+  </div>
+
+  <div class="login-right">
+    <div class="theme-toggle-corner">
+      <button class="theme-toggle-btn" (click)="toggleTheme()" style="background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.2s;">
+        {{ isDarkTheme ? '☀️' : '🌙' }}
+      </button>
+    </div>
+
+    <div class="login-box fade-in">
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Please enter your administrative credentials.</p>
+      </div>
+
+      <form class="login-form" (submit)="onSubmit($event)">
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input type="email" placeholder="admin@punjab.gov.in" (input)="username = $any($event.target).value" [value]="username" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" placeholder="••••••••" (input)="password = $any($event.target).value" [value]="password" required>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox"> Remember Device
+          </label>
+          <a href="#" class="forgot-pass">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="action-btn submit-btn login-btn" [class.loading-btn]="isLoading" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Sign In securely</span>
+          <span *ngIf="isLoading" class="loader"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

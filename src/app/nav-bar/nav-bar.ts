@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,6 +7,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
   standalone: false
 })
 export class NavBar implements OnInit {
+  @Input() isScrolled: boolean = false;
   @Output() toggle = new EventEmitter<void>();
   isLoading: boolean = true;
   isDarkTheme: boolean = false;

@@ -1,63 +1,97 @@
 <div class="main-container fade-in">
   <div class="form-card metric-card">
     <div class="form-header">
-      <h2>User Profile Details</h2>
-      <p>Enter the employee information and upload a profile photo.</p>
+      <ng-container *ngIf="!isLoading">
+        <h2>User Profile Details</h2>
+        <p>Enter the employee information and upload a profile photo.</p>
+      </ng-container>
+
+      <!-- Skeleton Header -->
+      <ng-container *ngIf="isLoading">
+        <div class="skeleton skeleton-page-title" style="margin-bottom: 12px; width: 220px; height: 26px;"></div>
+        <div class="skeleton skeleton-text" style="width: 320px; margin: 0;"></div>
+      </ng-container>
     </div>
 
     <div class="form-body">
-      <!-- Two column grid -->
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Full Name</label>
-          <input type="text" placeholder="e.g. Alena Donin" (input)="userDetails.name = $any($event.target).value" [value]="userDetails.name">
+      <ng-container *ngIf="!isLoading">
+        <!-- Two column grid -->
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="e.g. Alena Donin" (input)="userDetails.name = $any($event.target).value"
+              [value]="userDetails.name">
+          </div>
+
+          <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="alena@example.com" (input)="userDetails.email = $any($event.target).value"
+              [value]="userDetails.email">
+          </div>
+
+          <div class="input-group">
+            <label>Contact Number</label>
+            <input type="text" placeholder="+1 (555) 123-4567" (input)="userDetails.contact = $any($event.target).value"
+              [value]="userDetails.contact">
+          </div>
+
+          <div class="input-group">
+            <label>Role</label>
+            <select (change)="userDetails.role = $any($event.target).value">
+              <option value="Super Admin">Super Admin</option>
+              <option value="Admin">Admin</option>
+              <option value="Editor">Editor</option>
+              <option value="Subscriber">Subscriber</option>
+              <option value="User" selected>User</option>
+            </select>
+          </div>
         </div>
 
-        <div class="input-group">
-          <label>Email Address</label>
-          <input type="email" placeholder="alena@example.com" (input)="userDetails.email = $any($event.target).value" [value]="userDetails.email">
-        </div>
+        <div class="upload-section">
+          <label>Profile Photo</label>
+          <div class="upload-controls">
+            <label class="upload-btn">
+              <span>📷 Choose Image</span>
+              <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+            </label>
 
-        <div class="input-group">
-          <label>Contact Number</label>
-          <input type="text" placeholder="+1 (555) 123-4567" (input)="userDetails.contact = $any($event.target).value" [value]="userDetails.contact">
+            <button class="eye-btn" [class.disabled]="!uploadedImagePreview" (click)="togglePreview()"
+              title="Preview Uploaded Image">
+              👁️ View Detail
+            </button>
+          </div>
+          <p class="upload-status" *ngIf="uploadedImagePreview">
+            ✅ Image successfully loaded. Click the eye button to preview.
+          </p>
         </div>
+      </ng-container>
 
-        <div class="input-group">
-          <label>Role</label>
-          <select (change)="userDetails.role = $any($event.target).value">
-            <option value="Super Admin">Super Admin</option>
-            <option value="Admin">Admin</option>
-            <option value="Editor">Editor</option>
-            <option value="Subscriber">Subscriber</option>
-            <option value="User" selected>User</option>
-          </select>
+      <!-- Skeleton Body Form -->
+      <ng-container *ngIf="isLoading">
+        <div class="form-grid">
+          <div class="input-group" *ngFor="let i of [1,2,3,4]">
+            <div class="skeleton skeleton-text" style="width: 100px; margin-bottom: 2px;"></div>
+            <div class="skeleton" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+          </div>
         </div>
-      </div>
-
-      <div class="upload-section">
-        <label>Profile Photo</label>
-        <div class="upload-controls">
-          <label class="upload-btn">
-            <span>📷 Choose Image</span>
-            <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
-          </label>
-          
-          <button class="eye-btn" 
-                  [class.disabled]="!uploadedImagePreview"
-                  (click)="togglePreview()" 
-                  title="Preview Uploaded Image">
-            👁️ View Detail
-          </button>
+        <div class="upload-section"
+          style="margin-top: 14px; border-color: transparent; background: transparent; padding: 0;">
+          <div class="skeleton skeleton-text" style="width: 120px; margin-bottom: 12px;"></div>
+          <div style="display: flex; gap: 16px;">
+            <div class="skeleton" style="width: 140px; height: 40px; border-radius: 8px;"></div>
+            <div class="skeleton" style="width: 110px; height: 40px; border-radius: 8px;"></div>
+          </div>
         </div>
-        <p class="upload-status" *ngIf="uploadedImagePreview">
-          ✅ Image successfully loaded. Click the eye button to preview.
-        </p>
-      </div>
+      </ng-container>
     </div>
 
     <div class="form-footer">
-      <button class="action-btn submit-btn" (click)="onSubmit()">Save User Details</button>
+      <ng-container *ngIf="!isLoading">
+        <button class="action-btn submit-btn" (click)="sendData()">Save User Details</button>
+      </ng-container>
+      <ng-container *ngIf="isLoading">
+        <div class="skeleton" style="width: 155px; height: 40px; border-radius: 8px;"></div>
+      </ng-container>
     </div>
   </div>
 
@@ -73,4 +107,118 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Users Table (Dashboard Style) -->
+<div class="table-container fade-in" *ngIf="submittedUsers.length > 0" style="margin-top: 24px;">
+
+  <!-- Header: title + badge + search -->
+  <div class="dt-header p-4">
+    <div class="table-title-group">
+      <h3 class="dt-title">Users</h3>
+      <span class="table-badge">{{ filteredUsers.length }} record{{ filteredUsers.length !== 1 ? 's' : '' }}</span>
+    </div>
+    <div class="table-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="table-search" type="text" placeholder="Search by name, email, role…" [value]="searchQuery"
+        (input)="onSearch($any($event.target).value)" />
+      <button class="search-clear" *ngIf="searchQuery" (click)="onSearch('')" title="Clear">✕</button>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User Info</th>
+        <th>Contact</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>View</th>
+      </tr>
+    </thead>
+
+    <!-- Skeleton rows while loading -->
+    <tbody *ngIf="isLoading">
+      <tr *ngFor="let i of [1,2,3,4,5]">
+        <td>
+          <div class="skeleton skeleton-text skeleton-id"></div>
+        </td>
+        <td>
+          <div class="skeleton skeleton-text skeleton-name"></div>
+          <div class="skeleton skeleton-text skeleton-sub" style="margin-top:5px;"></div>
+        </td>
+        <td>
+          <div class="skeleton skeleton-text"></div>
+        </td>
+        <td>
+          <div class="skeleton skeleton-text skeleton-role"></div>
+        </td>
+        <td>
+          <div class="skeleton skeleton-text skeleton-status"></div>
+        </td>
+      </tr>
+    </tbody>
+
+    <!-- Actual data -->
+    <tbody *ngIf="!isLoading">
+      <tr *ngFor="let user of paginatedUsers; let i = index">
+        <td><strong>{{ (currentPage - 1) * pageSize + i + 1 }}</strong></td>
+        <td class="user-cell">
+          <div>
+            <div class="user-name"><strong>{{ user.name || '—' }}</strong></div>
+            <div class="user-email" style="color: #666; font-size: 0.85rem;">{{ user.email || '—' }}</div>
+          </div>
+        </td>
+
+        <td>{{ user.contact || '—' }}</td>
+
+        <td><span class="role-badge">{{ user.role }}</span></td>
+
+        <td><span class="status-badge" [ngClass]="(user.status || '').toLowerCase()">{{ user.status }}</span></td>
+
+        <td style="text-align: center;">
+          <div *ngIf="user.imageUrl; else noImageTemplate" (click)="openImage(user.imageUrl)" style="cursor: pointer;">
+            <img [src]="user.imageUrl"
+              style="width: 30px; height: 30px; border-radius: 4px; object-fit: cover; border: 1px solid #ddd;">
+          </div>
+
+          <ng-template #noImageTemplate>
+            <span style="color: #ccc; font-size: 0.75rem;">No Image</span>
+          </ng-template>
+        </td>
+      </tr>
+
+      <tr *ngIf="paginatedUsers.length === 0">
+        <td colspan="6" class="empty-search" style="text-align: center; padding: 20px;">
+          🔎 No results found for "<strong>{{ searchQuery }}</strong>"
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="pagination-bar" *ngIf="totalPages > 1">
+    <button class="pg-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹ Prev</button>
+    <button class="pg-btn pg-num" *ngFor="let p of pageNumbers" [class.active]="p === currentPage"
+      (click)="goToPage(p)">{{ p }}</button>
+    <button class="pg-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next ›</button>
+  </div>
+
+  <!-- Info bar -->
+  <div class="table-info-bar">
+    Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredUsers.length ?
+    filteredUsers.length : currentPage * pageSize }} of {{ filteredUsers.length }} records
+  </div>
+
+</div>
+
+
+
+<!-- Toast Notification -->
+<div class="toast-container" [class.show]="showToast" [class.toast-success]="toastType === 'success'"
+  [class.toast-error]="toastType === 'error'">
+  <span class="toast-icon">{{ toastType === 'success' ? '✅' : '❌' }}</span>
+  <span class="toast-msg">{{ toastMessage }}</span>
+  <button class="toast-close" (click)="showToast = false">✕</button>
 </div>
