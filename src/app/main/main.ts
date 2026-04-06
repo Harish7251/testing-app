@@ -24,14 +24,15 @@ userDetails = {
   contact: '',
   role: 'User',
   status: 'Active',
-  imageUrl: ''
+  imageUrl: '',
+  fatherName: ''
 };
 
   uploadedImagePreview: string | ArrayBuffer | null = null;
   isPreviewOpen: boolean = false;
 
   submittedUsers: {
-    name: string; email: string; contact: string; role: string; status: string, imageUrl?: string;
+    name: string; email: string; contact: string; role: string; status: string, imageUrl?: string;  fatherName?: string;
   }[] = [];
   // Search & Pagination
   searchQuery: string = '';
