@@ -10,6 +10,7 @@ import { Dashboard } from './dashboard/dashboard';
 import { Main } from './main/main';
 import { Login } from './login/login';
 import { PageUnderDevelopment } from './page-under-development/page-under-development';
+import { Stepper } from './stepper/stepper';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PageUnderDevelopment } from './page-under-development/page-under-develo
     Dashboard,
     Main,
     Login,
-    PageUnderDevelopment
+    PageUnderDevelopment,
+    Stepper
   ],
   imports: [
     BrowserModule,

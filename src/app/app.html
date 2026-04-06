@@ -13,6 +13,7 @@
     <app-nav-bar [isScrolled]="isScrolled" (toggle)="toggleSidebar()"></app-nav-bar>
     <app-dashboard *ngIf="currentView === 'dashboard'"></app-dashboard>
     <app-main *ngIf="currentView === 'main'"></app-main>
+    <app-stepper *ngIf="currentView === 'settings'"></app-stepper>
 
     <div *ngIf="currentView === 'contact'"
       style="padding: 40px; max-width: 600px; margin: 0 auto; width: 100%; animation: dropIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
@@ -45,7 +46,7 @@
     </div>
 
     <app-page-under-development
-      *ngIf="currentView !== 'dashboard' && currentView !== 'main' && currentView !== 'contact'"
+      *ngIf="currentView !== 'dashboard' && currentView !== 'main' && currentView !== 'contact' && currentView !== 'settings'"
       (navigate)="onNavigate($event)">
     </app-page-under-development>
   </main>

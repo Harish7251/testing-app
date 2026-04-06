@@ -14,6 +14,7 @@ export class Login implements OnInit {
   password = '';
   isLoading = false;
   isDarkTheme = false;
+  showPassword = false;
 
   ngOnInit() {
     if (document.body.classList.contains('dark-theme')) {
@@ -28,6 +29,10 @@ export class Login implements OnInit {
     } else {
       document.body.classList.remove('dark-theme');
     }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit(event: Event) {
