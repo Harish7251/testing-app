@@ -36,6 +36,9 @@
             <span class="icon">✉️</span> <span class="nav-text">Messages</span>
             <span class="nav-badge">3</span>
           </a></li>
+        <li [class.active]="currentView === 'effect'"><a href="#" (click)="onNavClick('effect', $event)">
+            <span class="icon">✨</span> <span class="nav-text">3D Effect</span>
+          </a></li>
       </ng-container>
 
       <ng-container *ngIf="isLoading">

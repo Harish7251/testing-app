@@ -26,10 +26,19 @@ export class App {
   // 💬 Chatbot
   messages: any[] = [];
   userInput: string = '';
+  isGenerating: boolean = false;
 
   // 🔐 Login
   onLogin() {
     this.isLoggedIn = true;
+
+    // Automatically log the user out after 10 seconds (10000 milliseconds)
+    // setTimeout(() => {
+    //   this.isLoggedIn = false;
+    //   this.currentView = 'dashboard'; // reset view on logout
+    //   alert('Session expired. You have been automatically logged out after 10 seconds.');
+    // }, 100000);
+
   }
 
   // 📜 Scroll
@@ -80,40 +89,41 @@ export class App {
 
   // 🤖 Send Message (MAIN LOGIC)
   sendMessage() {
-    if (!this.userInput.trim()) return;
+    if (!this.userInput.trim() || this.isGenerating) return;
 
-    // 👉 Add user message
-    this.messages.push({
-      text: this.userInput,
-      type: 'user'
-    });
-
+    this.messages.push({ text: this.userInput, type: 'user' });
     const userMsg = this.userInput;
     this.userInput = '';
+    this.isGenerating = true;
 
-    // 👉 Call backend API
-    fetch('https://localhost:7260/api/chat/ask', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: userMsg.trim()   // 👈 important
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.messages.push({
-          text: data.reply,
-          type: 'bot'
-        });
-      })
-      .catch(error => {
-        console.error(error);
-        this.messages.push({
-          text: 'Server error ❌',
-          type: 'bot'
-        });
-      });
+    const evt = new EventSource(`https://localhost:7260/api/chat/chat?prompt=${encodeURIComponent(userMsg)}`);
+    let botReply = '';
+
+    evt.onmessage = (event) => {
+      this.isGenerating = false;
+      try {
+        const data = JSON.parse(event.data);
+        if (data.response) botReply += data.response;
+      } catch { }
+
+      // Update last bot message
+      if (this.messages.length && this.messages[this.messages.length - 1].type === 'bot') {
+        this.messages[this.messages.length - 1].text = botReply;
+      } else {
+        this.messages.push({ text: botReply, type: 'bot' });
+      }
+
+      // Close SSE if done
+      try {
+        const data = JSON.parse(event.data);
+        if (data.done) evt.close();
+      } catch {}
+    };
+
+    evt.onerror = () => {
+      this.isGenerating = false;
+      evt.close();
+      if (!botReply) this.messages.push({ text: 'Server error ❌', type: 'bot' });
+    };
   }
 }

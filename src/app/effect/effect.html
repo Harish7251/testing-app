@@ -1,0 +1,93 @@
+<div class="effect-container">
+
+    <!-- Animated Header -->
+    <div class="effect-header">
+        <div class="particles">
+            <span *ngFor="let p of [1,2,3,4,5,6,7,8]" class="particle" [style.--i]="p"></span>
+        </div>
+        <div class="badge-pill">✨ 3D Gallery</div>
+        <h1>Explore the Visual Universe</h1>
+        <p>Hover over cards to feel the real-time 3D tilt. Scroll down to load more.</p>
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-num">{{ totalLoaded }}</span>
+                <span class="stat-label">Loaded</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-num">∞</span>
+                <span class="stat-label">Items</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-num">3D</span>
+                <span class="stat-label">Effects</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid-layout">
+        <div class="card-3d" *ngFor="let item of items; let i = index" [style.animation-delay]="(i % 9) * 0.07 + 's'"
+            [style.transform]="'perspective(1000px) rotateX(' + item.rotateX + 'deg) rotateY(' + item.rotateY + 'deg)'"
+            (mousemove)="onMouseMove($event, item)" (mouseleave)="onMouseLeave(item)">
+
+            <!-- Glowing shimmer layer -->
+            <div class="card-glow"
+                [style.background]="'radial-gradient(circle at ' + item.glowX + '% ' + item.glowY + '%, rgba(139,92,246,0.35), transparent 65%)'">
+            </div>
+
+            <!-- Image -->
+            <div class="card-image-wrapper">
+                <img [src]="item.image" [alt]="item.title" class="card-image" loading="lazy">
+                <div class="image-overlay"></div>
+                <span class="category-badge">{{ item.category }}</span>
+                <span class="tag-badge">{{ item.tag }}</span>
+            </div>
+
+            <!-- Content -->
+            <div class="card-content">
+                <div class="card-meta">
+                    <img [src]="item.thumb" class="card-avatar" [alt]="item.title">
+                    <div class="card-meta-text">
+                        <h3 class="card-title">{{ item.title }}</h3>
+                        <p class="card-desc">{{ item.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Stats row -->
+                <div class="card-stats">
+                    <span class="card-stat"><i>❤️</i> {{ item.likes }}</span>
+                    <span class="card-stat"><i>👁️</i> {{ item.views | number }}</span>
+                    <button class="card-btn">View →</button>
+                </div>
+            </div>
+
+            <!-- Shine sweep -->
+            <div class="card-shine"></div>
+        </div>
+
+        <!-- Skeleton placeholders while loading -->
+        <ng-container *ngIf="isLoading">
+            <div class="skeleton-card" *ngFor="let s of [1,2,3]">
+                <div class="sk-img"></div>
+                <div class="sk-body">
+                    <div class="sk-line wide"></div>
+                    <div class="sk-line medium"></div>
+                    <div class="sk-line short"></div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Infinite scroll anchor + loader dots -->
+    <div #anchor class="loading-indicator">
+        <ng-container *ngIf="isLoading">
+            <div class="dot-loader">
+                <span></span><span></span><span></span>
+                <p>Loading more...</p>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

@@ -11,6 +11,8 @@ import { Main } from './main/main';
 import { Login } from './login/login';
 import { PageUnderDevelopment } from './page-under-development/page-under-development';
 import { Stepper } from './stepper/stepper';
+import { Effect } from './effect/effect';
+import { FestivalOverlay } from './festival-overlay/festival-overlay';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { Stepper } from './stepper/stepper';
     Main,
     Login,
     PageUnderDevelopment,
-    Stepper
+    Stepper,
+    Effect,
+    FestivalOverlay
   ],
   imports: [
     BrowserModule,
