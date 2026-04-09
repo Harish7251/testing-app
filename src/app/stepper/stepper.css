@@ -242,6 +242,59 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 768px) {
+  .stepper-container {
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .stepper-header {
+    padding: 20px 15px;
+  }
+
+  .step-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .step-label {
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .step-line {
+    top: 18px;
+  }
+
+  .stepper-content {
+    padding: 20px;
+  }
+
+  .step-body h2 {
+    font-size: 22px;
+  }
+
+  .stepper-footer {
+    padding: 16px 20px;
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .review-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .review-item .lbl {
+    width: 100%;
+  }
+}
+
 /* Global Dark mode styling overrides - uses :host-context to react to body.dark-theme */
 :host-context(body.dark-theme) .stepper-container {
   background: #1e293b;

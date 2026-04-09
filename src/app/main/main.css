@@ -317,6 +317,27 @@ body.dark-theme .preview-content {
   .form-grid {
     grid-template-columns: 1fr;
   }
+
+  .table-header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-search-wrap, .table-search {
+    width: 100% !important;
+    margin-left: 0;
+  }
+
+  .pagination-bar {
+    padding: 12px;
+    gap: 4px;
+  }
+
+  .pg-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 
 /* Submitted Users Table */
