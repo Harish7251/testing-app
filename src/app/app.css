@@ -26,6 +26,12 @@ app-side-bar {
   height: 100%;
 }
 
+@media (max-width: 768px) {
+  app-side-bar {
+    height: 0;
+  }
+}
+
 .premium-sidebar {
   width: 280px;
   height: 100%;
@@ -859,12 +865,21 @@ body.dark-theme .header.scrolled {
   }
 
   .header {
-    flex-wrap: wrap;
-    gap: 16px;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .header h2 img {
+    width: 120px !important;
   }
 
   .user-profile {
-    margin-left: auto;
+    padding: 4px 10px;
+  }
+
+  .user-profile span {
+    display: none;
   }
 
   .table-container {
@@ -1074,7 +1089,9 @@ body.dark-theme .header.scrolled {
 /* Existing UI (same as before) */
 .chat-wrapper {
   width: 350px;
+  max-width: calc(100vw - 40px);
   height: 500px;
+  max-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   border-radius: 15px;

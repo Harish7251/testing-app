@@ -1,0 +1,93 @@
+<div class="stepper-container">
+  <div class="stepper-header">
+    <div class="stepper-wrapper">
+      <div 
+        *ngFor="let step of steps; let i = index" 
+        class="step-item" 
+        [class.active]="currentStep === step.id"
+        [class.completed]="currentStep > step.id">
+        
+        <div class="step-circle">
+          <span class="step-icon" *ngIf="currentStep <= step.id">{{ step.icon }}</span>
+          <span class="step-check" *ngIf="currentStep > step.id">✓</span>
+        </div>
+        <div class="step-label">{{ step.title }}</div>
+        
+        <div class="step-line" *ngIf="i < steps.length - 1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stepper-content">
+    <!-- Step 1: Personal Info -->
+    <div class="step-body fade-in" *ngIf="currentStep === 1">
+      <h2>Provide Your Personal Details</h2>
+      <p class="step-subtitle">Let's start with the basics.</p>
+      
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" [value]="formData.firstName" (input)="formData.firstName = $any($event.target).value" placeholder="e.g. Jane">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" [value]="formData.lastName" (input)="formData.lastName = $any($event.target).value" placeholder="e.g. Doe">
+      </div>
+    </div>
+
+    <!-- Step 2: Contact Details -->
+    <div class="step-body fade-in" *ngIf="currentStep === 2">
+      <h2>How can we reach you?</h2>
+      <p class="step-subtitle">We need this for communication purposes.</p>
+      
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" [value]="formData.email" (input)="formData.email = $any($event.target).value" placeholder="jane@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" [value]="formData.phone" (input)="formData.phone = $any($event.target).value" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-group">
+        <label>Residential Address</label>
+        <textarea rows="3" [value]="formData.address" (input)="formData.address = $any($event.target).value" placeholder="123 Main St..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 3: Review & Submit -->
+    <div class="step-body fade-in" *ngIf="currentStep === 3">
+      <h2>Review Your Application</h2>
+      <p class="step-subtitle">Please ensure all details are correct before submitting.</p>
+      
+      <div class="review-box">
+        <div class="review-item">
+          <span class="lbl">Name:</span>
+          <span class="val">{{ formData.firstName || '-' }} {{ formData.lastName || '-' }}</span>
+        </div>
+        <div class="review-item">
+          <span class="lbl">Email:</span>
+          <span class="val">{{ formData.email || '-' }}</span>
+        </div>
+        <div class="review-item">
+          <span class="lbl">Phone:</span>
+          <span class="val">{{ formData.phone || '-' }}</span>
+        </div>
+        <div class="review-item">
+          <span class="lbl">Address:</span>
+          <span class="val">{{ formData.address || '-' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stepper-footer">
+    <button class="btn btn-secondary" (click)="prevStep()" [disabled]="currentStep === 1" [class.invisible]="currentStep === 1">
+      Back
+    </button>
+    <button class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < steps.length">
+      Continue
+    </button>
+    <button class="btn btn-success" (click)="submitForm()" *ngIf="currentStep === steps.length">
+      Complete Registration
+    </button>
+  </div>
+</div>
