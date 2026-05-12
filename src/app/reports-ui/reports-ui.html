@@ -1,0 +1,157 @@
+<div class="container-fluid bg-light p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0 fw-bold">File Estimation Tracking Report</h4>
+      <small class="text-muted">Track the status of file estimates across different demands</small>
+    </div>
+    <div class="btn-group shadow-sm">
+      <button class="btn btn-white border"><i class="bi bi-file-earmark-excel text-success"></i> Export Excel</button>
+      <button class="btn btn-white border"><i class="bi bi-file-earmark-pdf text-danger"></i> Export PDF</button>
+      <button class="btn btn-white border"><i class="bi bi-printer"></i> Print</button>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm p-3 mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-2">
+        <label class="form-label small fw-bold">Financial Year</label>
+        <select class="form-select bg-light">
+          <option>2026-2027</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small fw-bold">Form Type</label>
+        <select class="form-select bg-light">
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small fw-bold">Revenue/Capital</label>
+        <select class="form-select bg-light">
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small fw-bold">Search Demand</label>
+        <div class="input-group">
+          <input type="text" class="form-control bg-light" placeholder="Search by demand...">
+          <span class="input-group-text bg-light border-start-0"><i class="bi bi-search"></i></span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100"><i class="bi bi-eye"></i> View Report</button>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-7">
+      <div class="card border-0 shadow-sm p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold mb-0">Demand Wise Approved Files</h6>
+          <select class="form-select form-select-sm w-auto bg-light">
+            <option>Bar</option>
+          </select>
+        </div>
+        <div style="display: block; height: 250px;">
+          <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card border-0 shadow-sm p-3 h-100">
+        <h6 class="fw-bold mb-3">File Estimates Status Distribution</h6>
+        <div style="display: block; height: 250px; position: relative;">
+          <canvas baseChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="'doughnut'">
+          </canvas>
+          <div class="chart-center-text">
+            <h4 class="mb-0 fw-bold">903</h4>
+            <small class="text-muted">Total</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm p-3 kpi-card">
+        <div class="d-flex align-items-center">
+          <div class="icon-box bg-blue-light text-primary me-3"><i class="bi bi-file-earmark-text"></i></div>
+          <div>
+            <p class="text-muted small mb-0">Total File Estimates</p>
+            <h3 class="fw-bold mb-0">903</h3>
+            <small class="text-muted">Total demand files</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm p-3 kpi-card">
+        <div class="d-flex align-items-center">
+          <div class="icon-box bg-info-light text-info me-3"><i class="bi bi-arrow-repeat"></i></div>
+          <div>
+            <p class="text-muted small mb-0">In Process</p>
+            <h3 class="fw-bold mb-0 text-primary">3</h3>
+            <small class="text-muted">Files in process</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm p-3 kpi-card">
+        <div class="d-flex align-items-center">
+          <div class="icon-box bg-success-light text-success me-3"><i class="bi bi-check-circle"></i></div>
+          <div>
+            <p class="text-muted small mb-0">Approved</p>
+            <h3 class="fw-bold mb-0 text-success">864</h3>
+            <small class="text-muted">Files approved</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm p-3 kpi-card">
+        <div class="d-flex align-items-center">
+          <div class="icon-box bg-warning-light text-warning me-3"><i class="bi bi-clock"></i></div>
+          <div>
+            <p class="text-muted small mb-0">To Be Created</p>
+            <h3 class="fw-bold mb-0 text-warning">56</h3>
+            <small class="text-muted">Pending creation</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold">Demand Wise Summary</h5>
+      <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-layout-three-columns"></i> Columns</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="bg-light-blue">
+          <tr>
+            <th>#</th>
+            <th>Demand</th>
+            <th>File Estimate Count</th>
+            <th>File Estimates In Process</th>
+            <th>File Estimates Approved</th>
+            <th>File Estimates To Be Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of reportData">
+            <td>{{item.id}}</td>
+            <td>{{item.demand}}</td>
+            <td>{{item.count}}</td>
+            <td class="text-primary">{{item.inProcess}}</td>
+            <td class="text-success">{{item.approved}}</td>
+            <td class="text-warning">{{item.toBeCreated}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

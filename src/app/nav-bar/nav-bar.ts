@@ -18,12 +18,19 @@ export class NavBar implements OnInit {
   }
 
   ngOnInit() {
-    if (document.body.classList.contains('dark-theme')) {
+    // ✅ Restore theme from localStorage on app load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
       this.isDarkTheme = true;
+      document.body.classList.add('dark-theme');
+    } else {
+      this.isDarkTheme = false;
+      document.body.classList.remove('dark-theme');
     }
+
     setTimeout(() => {
       this.isLoading = false;
-    }, 6000);
+    }, 1200);
   }
 
   toggleSidebar() {
@@ -34,8 +41,10 @@ export class NavBar implements OnInit {
     this.isDarkTheme = !this.isDarkTheme;
     if (this.isDarkTheme) {
       document.body.classList.add('dark-theme');
+      localStorage.setItem('theme', 'dark'); // ✅ Persist dark mode
     } else {
       document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light'); // ✅ Persist light mode
     }
   }
 }
