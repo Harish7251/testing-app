@@ -39,6 +39,12 @@
         <li [class.active]="currentView === 'effect'"><a href="#" (click)="onNavClick('effect', $event)">
             <span class="icon">✨</span> <span class="nav-text">3D Effect</span>
           </a></li>
+        <li [class.active]="currentView === 'payment'"><a href="#" (click)="onNavClick('payment', $event)">
+            <span class="icon">💰</span> <span class="nav-text">Payment</span>
+          </a></li>
+        <li [class.active]="currentView === 'reports'"><a href="#" (click)="onNavClick('reports', $event)">
+            <span class="icon">📄</span> <span class="nav-text">Reports</span>
+          </a></li>
       </ng-container>
 
       <ng-container *ngIf="isLoading">

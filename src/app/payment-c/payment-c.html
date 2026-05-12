@@ -1,0 +1,372 @@
+<div class="pg-wrapper">
+
+  <!-- ───── Left Panel – Order Summary ───── -->
+  <div class="pg-summary-panel">
+    <div class="pg-summary-brand">
+      <div class="pg-brand-icon">💰</div>
+      <div>
+        <div class="pg-brand-name">E-Budget Pay</div>
+        <div class="pg-brand-sub">Govt. of Punjab · Secure Gateway</div>
+      </div>
+    </div>
+
+    <div class="pg-order-card">
+      <div class="pg-order-label">Amount Due</div>
+      <div class="pg-order-amount">₹ {{ amount }}</div>
+      <div class="pg-order-divider"></div>
+      <div class="pg-order-row">
+        <span>Budget Allocation</span><span>₹ 2,000.00</span>
+      </div>
+      <div class="pg-order-row">
+        <span>Service Fee</span><span>₹ 350.00</span>
+      </div>
+      <div class="pg-order-row">
+        <span>GST (18%)</span><span>₹ 100.00</span>
+      </div>
+      <div class="pg-order-divider"></div>
+      <div class="pg-order-row pg-order-total">
+        <span>Total</span><span>₹ {{ amount }}</span>
+      </div>
+    </div>
+
+    <div class="pg-security-badges">
+      <div class="pg-badge">🔒 256-bit SSL</div>
+      <div class="pg-badge">🛡️ PCI DSS</div>
+      <div class="pg-badge">✅ RBI Compliant</div>
+    </div>
+
+    <div class="pg-accepted-cards">
+      <div class="pg-accepted-label">Accepted Payments</div>
+      <div class="pg-card-logos">
+        <span class="pg-logo-chip visa-chip">VISA</span>
+        <span class="pg-logo-chip mc-chip">MC</span>
+        <span class="pg-logo-chip rupay-chip">RuPay</span>
+        <span class="pg-logo-chip upi-chip">UPI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───── Right Panel – Steps ───── -->
+  <div class="pg-form-panel">
+
+    <!-- Step Indicator -->
+    <div class="pg-steps" *ngIf="currentStep < 4">
+      <div class="pg-step" [class.active]="currentStep >= 1" [class.done]="currentStep > 1">
+        <div class="pg-step-circle"><span *ngIf="currentStep <= 1">1</span><span *ngIf="currentStep > 1">✓</span></div>
+        <div class="pg-step-label">Method</div>
+      </div>
+      <div class="pg-step-line" [class.active]="currentStep > 1"></div>
+      <div class="pg-step" [class.active]="currentStep >= 2" [class.done]="currentStep > 2">
+        <div class="pg-step-circle"><span *ngIf="currentStep <= 2">2</span><span *ngIf="currentStep > 2">✓</span></div>
+        <div class="pg-step-label">Details</div>
+      </div>
+      <div class="pg-step-line" [class.active]="currentStep > 2"></div>
+      <div class="pg-step" [class.active]="currentStep >= 3">
+        <div class="pg-step-circle">3</div>
+        <div class="pg-step-label">Confirm</div>
+      </div>
+    </div>
+
+    <!-- ══════════════ STEP 1 : Method ══════════════ -->
+    <div class="pg-step-content" *ngIf="currentStep === 1">
+      <h2 class="pg-step-title">Choose Payment Method</h2>
+      <p class="pg-step-sub">Select how you'd like to complete your payment</p>
+
+      <div class="pg-methods-grid">
+        <div class="pg-method-card"
+             *ngFor="let m of paymentMethods"
+             [class.selected]="selectedMethod === m.id"
+             (click)="selectMethod(m.id)">
+          <div class="pg-method-radio" [class.checked]="selectedMethod === m.id"></div>
+          <div class="pg-method-icon">{{ m.icon }}</div>
+          <div class="pg-method-info">
+            <div class="pg-method-label">{{ m.label }}</div>
+            <div class="pg-method-desc">{{ m.description }}</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="pg-btn-primary" (click)="goToStep(2)">
+        Continue <span class="pg-btn-arrow">→</span>
+      </button>
+    </div>
+
+    <!-- ══════════════ STEP 2 : Details ══════════════ -->
+    <div class="pg-step-content" *ngIf="currentStep === 2">
+
+      <!-- ── CARD ── -->
+      <ng-container *ngIf="selectedMethod === 'card'">
+        <h2 class="pg-step-title">Card Details</h2>
+
+        <!-- 3D Flip Card -->
+        <div class="pg-card-scene">
+          <div class="pg-card-3d" [class.flipped]="isCardFlipped" [style.background]="cardGradient">
+            <!-- Front -->
+            <div class="pg-card-face pg-card-front">
+              <div class="pg-card-toprow">
+                <div class="pg-card-chip">
+                  <div class="pg-chip-line"></div>
+                  <div class="pg-chip-line"></div>
+                </div>
+                <div class="pg-card-brand-badge">{{ cardBrand }}</div>
+              </div>
+              <div class="pg-card-number">{{ displayCardNumber }}</div>
+              <div class="pg-card-bottom">
+                <div>
+                  <div class="pg-card-meta-label">Card Holder</div>
+                  <div class="pg-card-meta-value">{{ displayHolder }}</div>
+                </div>
+                <div>
+                  <div class="pg-card-meta-label">Expires</div>
+                  <div class="pg-card-meta-value">{{ displayExpiry }}</div>
+                </div>
+              </div>
+              <div class="pg-card-shimmer"></div>
+            </div>
+            <!-- Back -->
+            <div class="pg-card-face pg-card-back">
+              <div class="pg-card-stripe"></div>
+              <div class="pg-card-cvv-row">
+                <div class="pg-card-cvv-tape"></div>
+                <div class="pg-card-cvv-val">{{ cvv || '•••' }}</div>
+              </div>
+              <div class="pg-card-back-brand">{{ cardBrand }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Form -->
+        <div class="pg-form">
+          <div class="pg-field-full">
+            <label class="pg-label">Card Number</label>
+            <div class="pg-input-wrap">
+              <span class="pg-input-icon">💳</span>
+              <input type="text" class="pg-input" placeholder="1234 5678 9012 3456"
+                     maxlength="19" [value]="cardNumber"
+                     (input)="formatCardNumber($event)"
+                     (blur)="isCardFlipped = false" />
+            </div>
+          </div>
+
+          <div class="pg-field-full">
+            <label class="pg-label">Card Holder Name</label>
+            <div class="pg-input-wrap">
+              <span class="pg-input-icon">👤</span>
+              <input type="text" class="pg-input" placeholder="Name as on card"
+                     [(ngModel)]="cardHolder" />
+            </div>
+          </div>
+
+          <div class="pg-field-row">
+            <div class="pg-field">
+              <label class="pg-label">Month</label>
+              <select class="pg-input pg-select" [(ngModel)]="expiryMonth">
+                <option value="">MM</option>
+                <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+            <div class="pg-field">
+              <label class="pg-label">Year</label>
+              <select class="pg-input pg-select" [(ngModel)]="expiryYear">
+                <option value="">YY</option>
+                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+              </select>
+            </div>
+            <div class="pg-field">
+              <label class="pg-label">CVV</label>
+              <div class="pg-input-wrap">
+                <span class="pg-input-icon">🔐</span>
+                <input type="password" class="pg-input" placeholder="•••"
+                       maxlength="4" [(ngModel)]="cvv"
+                       (focus)="flipCard(true)"
+                       (blur)="flipCard(false)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ── UPI ── -->
+      <ng-container *ngIf="selectedMethod === 'upi'">
+        <h2 class="pg-step-title">UPI Payment</h2>
+        <div class="pg-upi-panel">
+
+          <!-- QR Display Area -->
+          <div class="pg-upi-qr-section">
+            <!-- Generated QR -->
+            <div class="pg-upi-qr-box" *ngIf="generatedQrUrl && !isGeneratingQr">
+              <img [src]="generatedQrUrl" alt="UPI QR Code" class="pg-qr-image" />
+              <div class="pg-qr-upi-label">Scan with any UPI app</div>
+              <div class="pg-upi-apps-row">
+                <span class="pg-upi-app gpay">G Pay</span>
+                <span class="pg-upi-app phonepe">PhonePe</span>
+                <span class="pg-upi-app paytm">Paytm</span>
+              </div>
+              <button class="pg-btn-ghost pg-qr-reset-btn" (click)="resetQr()">✕ Reset QR</button>
+            </div>
+
+            <!-- Generating Spinner -->
+            <div class="pg-upi-qr-box pg-qr-loading" *ngIf="isGeneratingQr">
+              <div class="pg-qr-spinner"></div>
+              <div class="pg-qr-loading-text">Generating QR…</div>
+            </div>
+
+            <!-- Placeholder when no QR yet -->
+            <div class="pg-upi-qr-placeholder" *ngIf="!generatedQrUrl && !isGeneratingQr">
+              <div class="pg-qr-placeholder-icon">📱</div>
+              <div class="pg-qr-placeholder-text">Click <strong>Generate QR</strong> to get the payment QR code — then scan it with any UPI app</div>
+            </div>
+          </div>
+
+          <!-- UPI ID Input + Generate -->
+          <div class="pg-form">
+            <div class="pg-field-full">
+              <label class="pg-label">UPI ID / VPA <span style="color:rgba(255,255,255,.35);font-weight:400;">(optional — for direct pay)</span></label>
+              <div class="pg-input-wrap">
+                <span class="pg-input-icon">📱</span>
+                <input type="text" class="pg-input" placeholder="yourname@upi"
+                       [(ngModel)]="upiId" (input)="resetQr()" />
+              </div>
+            </div>
+            <button class="pg-btn-generate-qr" (click)="generateQr()">
+              <span>⚡ Generate QR Code</span>
+            </button>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <!-- ── NET BANKING ── -->
+      <ng-container *ngIf="selectedMethod === 'netbanking'">
+        <h2 class="pg-step-title">Net Banking</h2>
+        <div class="pg-banks-grid">
+          <div class="pg-bank-card" *ngFor="let b of banks"
+               [class.selected]="selectedBank === b"
+               (click)="selectedBank = b">
+            <div class="pg-bank-icon">🏦</div>
+            <div class="pg-bank-name">{{ b }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ── WALLET ── -->
+      <ng-container *ngIf="selectedMethod === 'wallet'">
+        <h2 class="pg-step-title">Mobile Wallet</h2>
+        <div class="pg-wallets-grid">
+          <div class="pg-wallet-card" [class.selected]="selectedBank === 'amazon'" (click)="selectedBank = 'amazon'">
+            <div class="pg-wallet-icon">🛒</div>
+            <div>Amazon Pay</div>
+          </div>
+          <div class="pg-wallet-card" [class.selected]="selectedBank === 'mobikwik'" (click)="selectedBank = 'mobikwik'">
+            <div class="pg-wallet-icon">💜</div>
+            <div>Mobikwik</div>
+          </div>
+          <div class="pg-wallet-card" [class.selected]="selectedBank === 'freecharge'" (click)="selectedBank = 'freecharge'">
+            <div class="pg-wallet-icon">⚡</div>
+            <div>FreeCharge</div>
+          </div>
+          <div class="pg-wallet-card" [class.selected]="selectedBank === 'jio'" (click)="selectedBank = 'jio'">
+            <div class="pg-wallet-icon">📡</div>
+            <div>Jio Money</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="pg-btn-row">
+        <button class="pg-btn-ghost" (click)="goToStep(1)">← Back</button>
+        <button class="pg-btn-primary" [disabled]="!isStepTwoValid" (click)="goToStep(3)">
+          Review Payment <span class="pg-btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════ STEP 3 : Confirm / Processing ══════════════ -->
+    <div class="pg-step-content" *ngIf="currentStep === 3">
+      <div *ngIf="!isProcessing && !showSuccess">
+        <h2 class="pg-step-title">Review & Confirm</h2>
+        <div class="pg-review-card">
+          <div class="pg-review-row">
+            <span class="pg-review-key">Payment Method</span>
+            <span class="pg-review-val">
+              {{ getMethodLabel() }}
+            </span>
+          </div>
+          <div class="pg-review-row" *ngIf="selectedMethod === 'card'">
+            <span class="pg-review-key">Card Number</span>
+            <span class="pg-review-val">•••• •••• •••• {{ cardNumber.slice(-4) }}</span>
+          </div>
+          <div class="pg-review-row" *ngIf="selectedMethod === 'card'">
+            <span class="pg-review-key">Card Holder</span>
+            <span class="pg-review-val">{{ cardHolder }}</span>
+          </div>
+          <div class="pg-review-row" *ngIf="selectedMethod === 'upi'">
+            <span class="pg-review-key">UPI ID</span>
+            <span class="pg-review-val">{{ upiId }}</span>
+          </div>
+          <div class="pg-review-row" *ngIf="selectedMethod === 'netbanking'">
+            <span class="pg-review-key">Bank</span>
+            <span class="pg-review-val">{{ selectedBank }}</span>
+          </div>
+          <div class="pg-review-divider"></div>
+          <div class="pg-review-row pg-review-amount-row">
+            <span class="pg-review-key">Total Amount</span>
+            <span class="pg-review-amount">₹ {{ amount }}</span>
+          </div>
+        </div>
+
+        <div class="pg-consent">
+          <span>🔒</span> By confirming, you agree to our secure payment terms and authorize this transaction.
+        </div>
+
+        <div class="pg-btn-row">
+          <button class="pg-btn-ghost" (click)="goToStep(2)">← Back</button>
+          <button class="pg-btn-pay" (click)="processPayment()">
+            <span>Pay ₹ {{ amount }}</span>
+            <span class="pg-btn-lock">🔒</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Processing Spinner -->
+      <div class="pg-processing" *ngIf="isProcessing">
+        <div class="pg-spinner-ring"></div>
+        <div class="pg-processing-title">Processing Payment</div>
+        <div class="pg-processing-sub">Please wait, do not close this window…</div>
+        <div class="pg-processing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════ STEP 4 : Success ══════════════ -->
+    <div class="pg-step-content pg-success-screen" *ngIf="currentStep === 4">
+      <div class="pg-success-burst">
+        <div class="pg-success-icon">✓</div>
+      </div>
+      <h2 class="pg-success-title">Payment Successful!</h2>
+      <p class="pg-success-sub">Your transaction has been processed securely</p>
+
+      <div class="pg-receipt">
+        <div class="pg-receipt-header">Transaction Receipt</div>
+        <div class="pg-receipt-row">
+          <span>Transaction ID</span><span>#TXN{{ transactionId }}</span>
+        </div>
+        <div class="pg-receipt-row">
+          <span>Amount Paid</span><span>₹ {{ amount }}</span>
+        </div>
+        <div class="pg-receipt-row">
+          <span>Payment Mode</span><span>{{ selectedMethod.toUpperCase() }}</span>
+        </div>
+        <div class="pg-receipt-row">
+          <span>Status</span><span class="pg-status-badge">✅ Success</span>
+        </div>
+      </div>
+
+      <div class="pg-success-actions">
+        <button class="pg-btn-outline">🖨️ Download Receipt</button>
+        <button class="pg-btn-primary" (click)="resetPayment()">Make Another Payment</button>
+      </div>
+    </div>
+
+  </div>
+</div>
