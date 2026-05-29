@@ -16,6 +16,8 @@ import { Effect } from './effect/effect';
 import { FestivalOverlay } from './festival-overlay/festival-overlay';
 import { PaymentC } from './payment-c/payment-c';
 import { ReportsUI } from './reports-ui/reports-ui';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { Register } from './register/register';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { ReportsUI } from './reports-ui/reports-ui';
     Effect,
     FestivalOverlay,
     PaymentC,
-    ReportsUI
+    ReportsUI,
+    Register
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,9 @@ import { ReportsUI } from './reports-ui/reports-ui';
 
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+      provideHttpClient()
+
   ],
   bootstrap: [App]
 })

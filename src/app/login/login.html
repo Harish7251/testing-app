@@ -49,6 +49,10 @@
           <a href="#" class="forgot-pass">Forgot Password?</a>
         </div>
 
+        <div class="register-link">
+          <p>Don't have an account? <a routerLink="/register" class="register-here">Register here</a></p>
+        </div>
+
         <button type="submit" class="action-btn submit-btn login-btn" [class.loading-btn]="isLoading" [disabled]="isLoading">
           <span *ngIf="!isLoading">Sign In securely</span>
           <span *ngIf="isLoading" class="loader"></span>
