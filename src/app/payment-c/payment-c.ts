@@ -39,7 +39,7 @@ export class PaymentC implements OnInit {
   expiryMonth: string = '';
   expiryYear: string = '';
   cvv: string = '';
-  amount: string = '2,450.00';
+  amount: string = '2';
 
   // UPI
   upiId: string = '';
@@ -140,9 +140,9 @@ export class PaymentC implements OnInit {
     this.isGeneratingQr = true;
     this.generatedQrUrl = '';
     // Merchant/receiver UPI — the payer scans this QR, no input needed
-    const merchantUpi = 'ebudget.punjab@sbi';
+    const merchantUpi = 'harishkoundal077@okicici';
     const upiData = encodeURIComponent(
-      `upi://pay?pa=${merchantUpi}&pn=E-Budget+Pay&am=${this.amount.replace(/,/g,'')}&cu=INR&tn=Budget+Payment`
+      `upi://pay?pa=${merchantUpi}&pn=Harish+Koundal&am=${this.amount.replace(/,/g,'')}&cu=INR&tn=SmartPay+Payment`
     );
     this.generatedQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${upiData}&format=png&bgcolor=ffffff&margin=10`;
     setTimeout(() => { this.isGeneratingQr = false; }, 800);
