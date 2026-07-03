@@ -38,7 +38,6 @@ export class App {
 
   // 🔐 Login
   onLogin() {
-    this.authService.setLoggedIn(true);
     this.router.navigate(['/']);
   }
 

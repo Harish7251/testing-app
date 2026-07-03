@@ -18,6 +18,7 @@ export class Login implements OnInit {
   isLoading = false;
   isDarkTheme = false;
   showPassword = false;
+  isShaking = false;
 
   constructor(
     private authService: AuthService,
@@ -42,39 +43,30 @@ export class Login implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  shakeForm() {
+    this.isShaking = true;
+    setTimeout(() => {
+      this.isShaking = false;
+    }, 500);
+  }
+
   onSubmit(event: Event) {
     event.preventDefault();
 
-    if (!this.username || !this.password) {
-      alert('Please enter both username and password');
-      return;
-    }
-
     this.isLoading = true;
 
-    this.authService.login({
-      username: this.username,
-      password: this.password
-    }).subscribe({
-      next: (res: any) => {
-        this.isLoading = false;
+    // Simulate login delay
+    setTimeout(() => {
+      this.isLoading = false;
 
-        // 🔥 AUTH HANDLING (ONLY THIS IS REQUIRED)
-        this.authService.handleLoginSuccess(res);
+      // Mock auth handling without backend
+      this.authService.handleLoginSuccess({ token: 'mock-token' });
 
-        // optional emit
-        this.loginSuccess.emit();
+      // Emit login success
+      this.loginSuccess.emit();
 
-        // redirect after login
-        this.router.navigate(['/']);
-      },
-
-      error: (err) => {
-        this.isLoading = false;
-
-        console.log(err);
-        alert(err?.error?.message || 'Invalid username or password');
-      }
-    });
+      // Navigate to home
+      this.router.navigate(['/']);
+    }, 800);
   }
 }

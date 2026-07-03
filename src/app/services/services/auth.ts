@@ -9,9 +9,7 @@ export class AuthService {
 
   private apiUrl = 'https://localhost:7063/api/Auth';
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(
-    !!localStorage.getItem('token') // refresh ke baad bhi login state
-  );
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
