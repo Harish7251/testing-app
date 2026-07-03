@@ -109,48 +109,46 @@ userDetails = {
     this.isPreviewOpen = false;
   }
 
-  sendData() {
-    fetch('https://localhost:7260/api/chat/save-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.userDetails)
+sendData() {
+  fetch('https://localhost:7063/api/chat/save-user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(this.userDetails)
+  })
+    .then(res => res.text())
+    .then(text => {
+      const data = text ? JSON.parse(text) : {};
+      console.log(data);
+
+      this.triggerToast('User details saved successfully!', 'success');
+
+      this.loadUsers();
     })
-      .then(res => res.text())
-      .then(text => {
-        const data = text ? JSON.parse(text) : {};
-        console.log(data);
+    .catch(err => {
+      console.error(err);
+      this.triggerToast('Failed to save user details.', 'error');
+    });
+}
 
-        this.triggerToast('User details saved successfully!', 'success');
-
-        this.loadUsers(); 404
-      })
-      .catch(err => {
-        console.error(err);
-        this.triggerToast('Failed to save user details. Please try again.', 'error');
-      });
-  }
-
-  loadUsers() {
-    fetch('https://localhost:7260/api/chat/get-users')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("API error: " + res.status);
-        }
-        return res.text();
-      })
-      .then(text => {
-        console.log("RAW:", text);
-
-        const data = text ? JSON.parse(text) : [];
-        this.submittedUsers = data;
-      })
-      .catch(err => {
-        console.error("ERROR:", err);
-        this.triggerToast('Failed to load users', 'error');
-      });
-  }
+loadUsers() {
+  fetch('https://localhost:7063/api/chat/get-users')
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('API error: ' + res.status);
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log(data);
+      this.submittedUsers = data;
+    })
+    .catch(err => {
+      console.error(err);
+      this.triggerToast('Failed to load users', 'error');
+    });
+}
 
   selectedImage: string | null = null;
 

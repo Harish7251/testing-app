@@ -1,0 +1,57 @@
+<div class="register-wrapper" [class.dark-theme-active]="isDarkTheme">
+  <div class="register-left">
+    <div class="branding">
+      <div class="logo-circle" style="font-size: 24px; padding: 15px; width: 60px; height: 60px; border-radius: 16px;">PB</div>
+      <h1>Punjab SmartPay</h1>
+      <p>Join our platform and modernize your financial ecosystem with state-of-the-art smart dashboard analytics.</p>
+    </div>
+    <div class="abstract-shape shape-1"></div>
+    <div class="abstract-shape shape-2"></div>
+  </div>
+
+  <div class="register-right">
+    <div class="theme-toggle-corner">
+      <button class="theme-toggle-btn" (click)="toggleTheme()" style="background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.2s;">
+        {{ isDarkTheme ? '☀️' : '🌙' }}
+      </button>
+    </div>
+
+    <div class="register-box fade-in">
+      <div class="register-header">
+        <h2>Create Account</h2>
+        <p>Join us today and get started with your account.</p>
+      </div>
+
+      <form class="register-form" (submit)="onSubmit($event)">
+        <div class="input-group">
+          <label>Username</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" placeholder="Enter your username" [(ngModel)]="user.username" name="username" required>
+          </div>
+        </div>
+
+
+        <div class="input-group">
+          <label>Password</label>
+          <div class="input-wrapper" style="position: relative;">
+            <span class="input-icon">🔒</span>
+            <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a password" [(ngModel)]="user.password" required style="padding-right: 45px;">
+            <button type="button" (click)="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; padding: 0;">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="login-link">
+          <p>Already have an account? <a routerLink="/login" class="login-here">Login here</a></p>
+        </div>
+
+        <button type="submit" class="action-btn submit-btn register-btn" [class.loading-btn]="isLoading" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Create Account</span>
+          <span *ngIf="isLoading" class="loader"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

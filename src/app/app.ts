@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { AuthService } from './services/services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,12 @@ export class App {
   isLoggedIn: boolean = false;
   isOpen = false;
   isLoading: boolean = true;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.isLoggedIn$.subscribe(status => {
+      this.isLoggedIn = status;
+    });
+  }
 
   // 📊 Dashboard Data
   tableData: any[] = [];
@@ -30,15 +38,7 @@ export class App {
 
   // 🔐 Login
   onLogin() {
-    this.isLoggedIn = true;
-
-    // Automatically log the user out after 10 seconds (10000 milliseconds)
-    // setTimeout(() => {
-    //   this.isLoggedIn = false;
-    //   this.currentView = 'dashboard'; // reset view on logout
-    //   alert('Session expired. You have been automatically logged out after 10 seconds.');
-    // }, 100000);
-
+    this.router.navigate(['/']);
   }
 
   // 📜 Scroll

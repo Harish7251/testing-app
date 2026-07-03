@@ -1,4 +1,4 @@
-<app-login *ngIf="!isLoggedIn" (loginSuccess)="onLogin()"></app-login>
+<router-outlet *ngIf="!isLoggedIn"></router-outlet>
 
 <div class="dashboard-layout" *ngIf="isLoggedIn">
   <!-- Mobile Overlay Backdrop -->

@@ -5,18 +5,37 @@
       <h1>Punjab SmartPay</h1>
       <p>Modernize your financial ecosystem with our state-of-the-art smart dashboard analytics.</p>
     </div>
+
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="card-icon">📊</div>
+        <h3>Management</h3>
+        <p>Streamline operations with intelligent tools</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">📈</div>
+        <h3>Data Analytics</h3>
+        <p>Insights powered by advanced analytics</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">🤖</div>
+        <h3>CRM Automation</h3>
+        <p>Automate customer relationships</p>
+      </div>
+    </div>
     <div class="abstract-shape shape-1"></div>
     <div class="abstract-shape shape-2"></div>
+    <div class="abstract-shape shape-3"></div>
   </div>
 
   <div class="login-right">
     <div class="theme-toggle-corner">
-      <button class="theme-toggle-btn" (click)="toggleTheme()" style="background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.2s;">
+      <button class="theme-toggle-btn" (click)="toggleTheme()">
         {{ isDarkTheme ? '☀️' : '🌙' }}
       </button>
     </div>
 
-    <div class="login-box fade-in">
+    <div class="login-box" [class.shaking]="isShaking">
       <div class="login-header">
         <h2>Welcome Back</h2>
         <p>Please enter your administrative credentials.</p>
@@ -33,10 +52,10 @@
 
         <div class="input-group">
           <label>Password</label>
-          <div class="input-wrapper" style="position: relative;">
+          <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" (input)="password = $any($event.target).value" [value]="password" required style="padding-right: 45px;">
-            <button type="button" (click)="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; padding: 0;">
+            <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" (input)="password = $any($event.target).value" [value]="password" required>
+            <button type="button" class="password-toggle-btn" (click)="togglePasswordVisibility()">
               {{ showPassword ? '🙈' : '👁️' }}
             </button>
           </div>
@@ -47,6 +66,10 @@
             <input type="checkbox"> Remember Device
           </label>
           <a href="#" class="forgot-pass">Forgot Password?</a>
+        </div>
+
+        <div class="register-link">
+          <p>Don't have an account? <a routerLink="/register" class="register-here">Register here</a></p>
         </div>
 
         <button type="submit" class="action-btn submit-btn login-btn" [class.loading-btn]="isLoading" [disabled]="isLoading">
